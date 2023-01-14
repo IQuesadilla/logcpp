@@ -1,7 +1,6 @@
 #ifndef LOGCPP_H
 #define LOGCPP_H
 #pragma once
-#include <iostream>
 
 class lifetimelogcpp;
 

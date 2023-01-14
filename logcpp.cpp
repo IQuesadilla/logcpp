@@ -1,5 +1,6 @@
 #include "logcpp.h"
 #include "sstream"
+#include <iostream>
 
 void lifetimelogcpp::operator<<(const char *output)
 {

@@ -1,16 +1,21 @@
 #include "../logcpp.h"
+#include <memory>
 
-void otherfunc(logcpp *log)
+void otherfunc(std::shared_ptr<logcpp> logobj)
 {
-    auto func2 = log->function("newfunc");
+    auto func2 = logobj->function("newfunc");
     func2 << "Here inside";
 }
 
 int main(int argc, char **argv)
 {
-    logcpp temp;
-    auto func1 = temp.function("main");
+    std::shared_ptr<logcpp> logobj;
+    logobj.reset(new logcpp());
+
+    auto func1 = logobj->function("main");
     func1 << "Here outer";
-    otherfunc(&temp);
+
+    otherfunc(logobj);
+    
     func1 << "Here outer again";
 }
