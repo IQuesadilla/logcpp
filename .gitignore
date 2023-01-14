@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+# Test Executables
+test/bin/*
+
+# VSCode
+.vscode
