@@ -11,11 +11,12 @@ public:
     ~logcpp();
 
     void log(const char *output);
+    
     lifetimelogcpp function(const char *name);
     void endfunc();
 
 private:
-    void indent();
+    const char *indent();
     int tabs;
 };
 
@@ -25,10 +26,16 @@ public:
     lifetimelogcpp(logcpp *log) { logobj = log; }
     ~lifetimelogcpp() { logobj->endfunc(); }
 
-    void operator<<(const char *output);
+    friend lifetimelogcpp &operator<<(lifetimelogcpp &stream, const char *output);
+    friend lifetimelogcpp &operator<<(lifetimelogcpp &stream, const int output);
+    friend lifetimelogcpp &operator<<(lifetimelogcpp &stream, lifetimelogcpp &output);
 
-private:
+    lifetimelogcpp &operator<<(lifetimelogcpp &stream);
+
+protected:
     logcpp *logobj;
 };
+
+lifetimelogcpp &iendl(lifetimelogcpp &stream);
 
 #endif
