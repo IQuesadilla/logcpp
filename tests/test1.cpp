@@ -1,5 +1,6 @@
 #include "../logcpp.h"
 #include <memory>
+#include <sstream>
 
 void otherfunc(std::shared_ptr<logcpp> logobj)
 {
@@ -17,5 +18,6 @@ int main(int argc, char **argv)
 
     otherfunc(logobj);
     
-    func1 << "Here outer again";
+    func1 << "Here outer again" << 6 << iendl;
+    func1 << iendl;
 }

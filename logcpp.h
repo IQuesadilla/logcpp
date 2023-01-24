@@ -44,8 +44,10 @@ public:
     friend lifetimelogcpp & operator<<(lifetimelogcpp &buff, const int output);
     friend lifetimelogcpp & operator<<(lifetimelogcpp &buff, const logcpp::loglevel lev);
 
-private:
+protected:
     logcpp *logobj;
 };
+
+lifetimelogcpp &iendl(lifetimelogcpp &stream);
 
 #endif
