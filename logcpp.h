@@ -3,6 +3,7 @@
 #pragma once
 
 #include <sstream>
+#include <mutex>
 
 class lifetimelogcpp;
 
@@ -30,6 +31,7 @@ private:
     std::string indent();
 
     std::stringstream logstream;
+    std::mutex output_lock;
     int tabs;
 };
 

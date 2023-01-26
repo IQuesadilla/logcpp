@@ -19,30 +19,37 @@ void logcpp::log(const char *output)
 
 void logcpp::flush(loglevel lev)
 {
-    std::cout << indent();
+    std::stringstream templogstream;
+
+    templogstream << indent();
+
     switch (lev)
     {
         case NOTE:
-            std::cout << "Note: ";
+            templogstream << "Note: ";
             break;
         case VALUE:
-            std::cout << "Value: ";
+            templogstream << "Value: ";
             break;
         case WARNING:
-            std::cout << "Warning: ";
+            templogstream << "Warning: ";
             break;
         case ERROR:
-            std::cout << "ERROR: ";
+            templogstream << "ERROR: ";
             break;
         case FUNCTION:
-            std::cout << "Function: ";
+            templogstream << "Function: ";
             break;
     }
 
-    std::cout << logstream.str() << std::endl;
+    templogstream << logstream.str() << std::endl;
 
     logstream.str("");
     logstream.clear();
+
+    output_lock.lock();
+    std::cout << templogstream.str();
+    output_lock.unlock();
 }
 
 lifetimelogcpp logcpp::function(const char *name)
