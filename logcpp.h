@@ -22,15 +22,13 @@ public:
     logcpp();
     ~logcpp();
 
-    void log(const char *output);
-    void flush(loglevel lev);
+    void flush(loglevel lev, const char *output);
     lifetimelogcpp function(const char *name);
     void endfunc();
 
 private:
     std::string indent();
 
-    std::stringstream logstream;
     std::mutex output_lock;
     int tabs;
 };
@@ -46,7 +44,10 @@ public:
     friend lifetimelogcpp & operator<<(lifetimelogcpp &buff, const int output);
     friend lifetimelogcpp & operator<<(lifetimelogcpp &buff, const logcpp::loglevel lev);
 
-protected:
+private:
+    void log(const char *output);
+
+    std::stringstream logstream;
     logcpp *logobj;
 };
 

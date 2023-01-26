@@ -12,12 +12,7 @@ logcpp::~logcpp()
     ;
 }
 
-void logcpp::log(const char *output)
-{
-    logstream << output;
-}
-
-void logcpp::flush(loglevel lev)
+void logcpp::flush(loglevel lev, const char *output)
 {
     std::stringstream templogstream;
 
@@ -42,10 +37,7 @@ void logcpp::flush(loglevel lev)
             break;
     }
 
-    templogstream << logstream.str() << std::endl;
-
-    logstream.str("");
-    logstream.clear();
+    templogstream << output << std::endl;
 
     output_lock.lock();
     std::cout << templogstream.str();
@@ -54,9 +46,9 @@ void logcpp::flush(loglevel lev)
 
 lifetimelogcpp logcpp::function(const char *name)
 {
-    indent();
-    logstream << "(" << name << ")";
-    flush(loglevel::FUNCTION);
+    std::stringstream templogstream;
+    templogstream << "(" << name << ")";
+    flush(loglevel::FUNCTION,templogstream.str().c_str());
     ++tabs;
     return lifetimelogcpp(this);
 }
@@ -78,25 +70,33 @@ std::string logcpp::indent()
 
 lifetimelogcpp & operator<<(lifetimelogcpp &buff, const char *output)
 {
-    buff.logobj->log(output);
+    buff.log(output);
     return buff;
 }
 
 lifetimelogcpp & operator<<(lifetimelogcpp &buff, const std::string output)
 {
-    buff.logobj->log(output.c_str());
+    buff.log(output.c_str());
     return buff;
 }
 
 lifetimelogcpp & operator<<(lifetimelogcpp &buff, const int output)
 {
-    buff.logobj->log(std::to_string(output).c_str());
+    buff.log(std::to_string(output).c_str());
     return buff;
 }
 
 lifetimelogcpp & operator<<(lifetimelogcpp &buff, logcpp::loglevel lev)
 {
-    buff.logobj->flush(lev);
+    buff.logobj->flush(lev,buff.logstream.str().c_str());
+
+    buff.logstream.str("");
+    buff.logstream.clear();
+
     return buff;
 }
 
+void lifetimelogcpp::log(const char *output)
+{
+    logstream << output;
+}
