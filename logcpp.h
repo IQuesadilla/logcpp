@@ -12,14 +12,28 @@ class logcpp
 public:
     enum loglevel
     {
-        NOTE,
-        VALUE,
-        WARNING,
         ERROR,
+        WARNING,
+        NOTE,
+        NOTEV,
+        NOTEVV,
+        NOTEDEBUG,
+        VALUE,
+        VALUEV,
+        VALUEVV,
+        VALUEDEBUG,
         FUNCTION
     };
 
-    logcpp();
+    enum vlevel
+    {
+        DEFAULT,
+        V,
+        VV,
+        DEBUG
+    };
+
+    logcpp(vlevel verbosity);
     ~logcpp();
 
     void flush(loglevel lev, const char *output);
@@ -29,6 +43,7 @@ public:
 private:
     std::string indent();
 
+    vlevel _verbosity;
     std::mutex output_lock;
     int tabs;
 };

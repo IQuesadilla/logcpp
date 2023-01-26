@@ -2,9 +2,10 @@
 #include "sstream"
 #include <iostream>
 
-logcpp::logcpp()
+logcpp::logcpp(vlevel verbosity)
 {
     tabs = 0;
+    _verbosity = verbosity;
 }
 
 logcpp::~logcpp()
@@ -18,12 +19,38 @@ void logcpp::flush(loglevel lev, const char *output)
 
     templogstream << indent();
 
+    switch (_verbosity)
+    {
+        case DEBUG:
+            // Allow all on debug
+        break;
+        case VV:
+            if (lev == FUNCTION ||
+                lev == NOTEDEBUG ||
+                lev == VALUEDEBUG) return;
+        break;
+        case V:
+            if (lev == NOTEVV ||
+                lev == VALUEVV) return;
+        break;
+        case DEFAULT:
+            if (lev == NOTEV ||
+                lev == VALUEV) return;
+        break;
+    }
+
     switch (lev)
     {
         case NOTE:
+        case NOTEV:
+        case NOTEVV:
+        case NOTEDEBUG:
             templogstream << "Note: ";
             break;
         case VALUE:
+        case VALUEV:
+        case VALUEVV:
+        case VALUEDEBUG:
             templogstream << "Value: ";
             break;
         case WARNING:
