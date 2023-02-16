@@ -1,6 +1,6 @@
 #include "logcpp.h"
-#include "sstream"
 #include <iostream>
+#include "colorcodes.h"
 
 logcpp::logcpp(vlevel verbosity)
 {
@@ -45,26 +45,26 @@ void logcpp::flush(loglevel lev, const char *output)
         case NOTEV:
         case NOTEVV:
         case NOTEDEBUG:
-            templogstream << "Note: ";
+            templogstream << GREEN << "Note: ";
             break;
         case VALUE:
         case VALUEV:
         case VALUEVV:
         case VALUEDEBUG:
-            templogstream << "Value: ";
+            templogstream << BLUE << "Value: ";
             break;
         case WARNING:
-            templogstream << "Warning: ";
+            templogstream << YELLOW << "Warning: ";
             break;
         case ERROR:
-            templogstream << "ERROR: ";
+            templogstream << RED << "ERROR: ";
             break;
         case FUNCTION:
-            templogstream << "Function: ";
+            templogstream << MAGENTA << "Function: ";
             break;
     }
 
-    templogstream << output << std::endl;
+    templogstream << output << RESET << std::endl;
 
     output_lock.lock();
     std::cout << templogstream.str();

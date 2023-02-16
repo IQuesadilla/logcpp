@@ -5,19 +5,20 @@
 void otherfunc(std::shared_ptr<logcpp> logobj)
 {
     auto func2 = logobj->function("newfunc");
-    func2 << "Here inside";
+    func2 << "Here inside" << logcpp::loglevel::NOTE;
 }
 
 int main(int argc, char **argv)
 {
     std::shared_ptr<logcpp> logobj;
-    logobj.reset(new logcpp());
+    logobj.reset(new logcpp(logcpp::vlevel::DEBUG));
 
-    auto func1 = logobj->function("main");
-    func1 << "Here outer";
+    auto log = logobj->function("main");
+    log << "Here outer" << logcpp::loglevel::NOTE;
 
     otherfunc(logobj);
     
-    func1 << "Here outer again" << 6 << iendl;
-    func1 << iendl;
+    log << "The number six: " << 6 << logcpp::loglevel::VALUE;
+    log << "This is a warning" << logcpp::loglevel::WARNING;
+    log << "Here is an error" << logcpp::loglevel::ERROR;
 }
