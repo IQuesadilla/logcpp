@@ -1,6 +1,6 @@
 CXX = g++
 CFLAGS = -std=c++17 -fPIC -Wall
-TESTFLAGS = -o ./tests/bin/$@ $^
+TESTFLAGS = -o $@ $^
 OBJFLAGS = -o $@ -c $<
 TARGET = logcpp.o
 TESTS = tests/bin/test1
