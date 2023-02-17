@@ -1,17 +1,19 @@
 CXX = g++
-CFLAGS = -o $@ -c $< -std=c++17 -fPIC 
-TARGET = liblogcpp.o
+CFLAGS = -std=c++17 -fPIC -Wall
+TESTFLAGS = -o ./tests/bin/$@ $^
+OBJFLAGS = -o $@ -c $<
+TARGET = logcpp.o
 TESTS = test1
 
 all: $(TARGET)
 
 tests: $(TESTS)
 
-test1: liblogcpp.o tests/test1.cpp
-	$(CXX) -o ./tests/bin/$@ $^ -std=c++17
+test1: tests/test1.cpp logcpp.o
+	$(CXX) $(TESTFLAGS) $(CFLAGS)
 
-liblogcpp.o: logcpp.cpp logcpp.h
-	$(CXX) $(CFLAGS)
+logcpp.o: logcpp.cpp logcpp.h
+	$(CXX) $(OBJFLAGS) $(CFLAGS)
 
 clean:
 	-rm *.o

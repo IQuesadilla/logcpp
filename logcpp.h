@@ -45,6 +45,7 @@ private:
 
     vlevel _verbosity;
     std::mutex output_lock;
+    std::chrono::system_clock::time_point start;
     int tabs;
 };
 
@@ -65,7 +66,5 @@ private:
     std::stringstream logstream;
     logcpp *logobj;
 };
-
-lifetimelogcpp &iendl(lifetimelogcpp &stream);
 
 #endif

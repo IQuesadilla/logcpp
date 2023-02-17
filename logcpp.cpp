@@ -6,6 +6,7 @@ logcpp::logcpp(vlevel verbosity)
 {
     tabs = 0;
     _verbosity = verbosity;
+    start = std::chrono::system_clock::now();
 }
 
 logcpp::~logcpp()
@@ -15,29 +16,30 @@ logcpp::~logcpp()
 
 void logcpp::flush(loglevel lev, const char *output)
 {
-    std::stringstream templogstream;
-
-    templogstream << indent();
-
     switch (_verbosity)
     {
-        case DEBUG:
-            // Allow all on debug
-        break;
+        case DEFAULT:
+            if (lev == NOTEV ||
+                lev == VALUEV) return;
+        case V:
+            if (lev == NOTEVV ||
+                lev == VALUEVV) return;
         case VV:
             if (lev == FUNCTION ||
                 lev == NOTEDEBUG ||
                 lev == VALUEDEBUG) return;
-        break;
-        case V:
-            if (lev == NOTEVV ||
-                lev == VALUEVV) return;
-        break;
-        case DEFAULT:
-            if (lev == NOTEV ||
-                lev == VALUEV) return;
-        break;
+        case DEBUG:
+            // Allow all on debug
+        break; 
     }
+
+    std::stringstream templogstream;
+
+    auto ms = std::to_string( std::chrono::duration_cast<std::chrono::milliseconds>
+                    ( std::chrono::system_clock::now() - start).count() );
+
+
+    templogstream << '[' << std::string(12-ms.length(),'0') << ms << "] " << indent();
 
     switch (lev)
     {
@@ -87,12 +89,17 @@ void logcpp::endfunc()
 
 std::string logcpp::indent()
 {   
-    std::stringstream os;
-    for (int i = 0; i < tabs; ++i)
+    if (_verbosity == DEBUG)
     {
-        os << "  ";
+        std::stringstream os;
+        for (int i = 0; i < tabs; ++i)
+        {
+            os << "  ";
+        }
+        return os.str();
     }
-    return os.str();
+    else
+        return "";
 }
 
 lifetimelogcpp & operator<<(lifetimelogcpp &buff, const char *output)
