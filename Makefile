@@ -3,13 +3,13 @@ CFLAGS = -std=c++17 -fPIC -Wall
 TESTFLAGS = -o ./tests/bin/$@ $^
 OBJFLAGS = -o $@ -c $<
 TARGET = logcpp.o
-TESTS = test1
+TESTS = tests/bin/test1
 
 all: $(TARGET)
 
 tests: $(TESTS)
 
-test1: tests/test1.cpp logcpp.o
+tests/bin/test1: tests/test1.cpp logcpp.o
 	$(CXX) $(TESTFLAGS) $(CFLAGS)
 
 logcpp.o: logcpp.cpp logcpp.h
